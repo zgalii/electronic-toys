@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子玩具们 · 我的 Apple 设备收藏馆</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=ZCOOL+KuaiLe&display=swap');
+
+  :root{
+    --pink:#ff8fbd;
+    --yellow:#ffd96a;
+    --blue:#8ed8ff;
+    --mint:#9ee7c2;
+    --purple:#bda4ff;
+    --ink:#553f61;
+    --paper:#fffaf1;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    font-family:"DotGothic16","Courier New",monospace;
+    background:
+      linear-gradient(rgba(255,255,255,.45) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.45) 1px,transparent 1px),
+      #ffdce9;
+    background-size:24px 24px;
+  }
+  button{font:inherit;color:inherit}
+
+  header{
+    padding:36px 20px 24px;
+    text-align:center;
+  }
+  .title{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    margin:0;
+    padding:16px 28px;
+    font-family:"ZCOOL KuaiLe","DotGothic16",sans-serif;
+    font-size:clamp(42px,7vw,76px);
+    letter-spacing:5px;
+    color:#fff;
+    text-shadow:
+      4px 4px 0 #d46b9d,
+      8px 8px 0 rgba(95,65,100,.16);
+    background:var(--pink);
+    border:5px solid var(--ink);
+    box-shadow:8px 8px 0 var(--ink);
+    transform:rotate(-1deg);
+  }
+  .title span{
+    display:inline-block;
+    margin:0 2px;
+    text-shadow:3px 3px 0 var(--ink), 5px 5px 0 rgba(95,65,100,.15);
+  }
+  .title span:nth-child(1){font-size:.92em;color:#fff5a6;transform:rotate(-7deg) translateY(3px)}
+  .title span:nth-child(2){font-size:1.12em;color:#bdf2ff;transform:rotate(5deg) translateY(-4px)}
+  .title span:nth-child(3){font-size:.98em;color:#ffd0e5;transform:rotate(-3deg) translateY(2px)}
+  .title span:nth-child(4){font-size:1.18em;color:#cfc0ff;transform:rotate(7deg) translateY(-5px)}
+  .title span:nth-child(5){font-size:1.02em;color:#c9f5d9;transform:rotate(-4deg) translateY(1px)}
+  .title:before,.title:after{
+    content:"✦";
+    position:absolute;
+    font-size:26px;
+    color:var(--yellow);
+    text-shadow:2px 2px 0 var(--ink);
+  }
+  .title:before{left:-30px;top:-25px}
+  .title:after{right:-30px;bottom:-25px}
+
+  .subtitle{margin:24px auto 0;max-width:760px;font-size:15px;line-height:1.8}
+
+  .toolbar{
+    max-width:1180px;
+    margin:10px auto 30px;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .filter{
+    border:3px solid var(--ink);
+    background:#fff;
+    padding:8px 14px;
+    cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .filter.active{background:var(--yellow);transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+  .grid{
+    width:min(1180px,92vw);
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    padding-bottom:60px;
+  }
+  .card{
+    position:relative;
+    border:4px solid var(--ink);
+    background:var(--paper);
+    box-shadow:7px 7px 0 var(--ink);
+    padding:15px;
+    cursor:pointer;
+    transition:.16s ease;
+    overflow:hidden;
+  }
+  .card:nth-child(4n+1){background:#fff3fa}
+  .card:nth-child(4n+2){background:#f2fbff}
+  .card:nth-child(4n+3){background:#fffbed}
+  .card:nth-child(4n+4){background:#f5fff9}
+  .card:hover{transform:translate(-4px,-4px);box-shadow:11px 11px 0 var(--ink)}
+  .badge{
+    position:absolute;right:8px;top:8px;
+    padding:3px 6px;background:var(--mint);
+    border:2px solid var(--ink);font-size:11px;
+  }
+  .pixel-stage{
+    height:190px;
+    display:grid;
+    place-items:center;
+    image-rendering:pixelated;
+    background:
+      radial-gradient(circle at 20% 20%,rgba(255,255,255,.8) 0 3px,transparent 4px),
+      radial-gradient(circle at 80% 72%,rgba(255,255,255,.8) 0 3px,transparent 4px),
+      #e9ddff;
+    border:3px dashed var(--ink);
+  }
+  .card:nth-child(4n+2) .pixel-stage{background:#dff5ff}
+  .card:nth-child(4n+3) .pixel-stage{background:#fff0bf}
+  .card:nth-child(4n+4) .pixel-stage{background:#dcf8e8}
+
+  .device{
+    position:relative;
+    width:92px;height:142px;
+    background:#c8ccd8;
+    border:6px solid #3f4051;
+    box-shadow:7px 7px 0 rgba(63,64,81,.35);
+  }
+  .device.phone{border-radius:17px}
+  .device.phone .screen{
+    position:absolute;inset:10px 7px 10px;
+    background:linear-gradient(145deg,#91d9ff,#c9a6ff 58%,#ff9dc7);
+    border:3px solid #202132;
+    overflow:hidden;
+  }
+  .device.phone .screen:after{
+    content:"";
+    position:absolute;left:18px;top:20px;width:48px;height:48px;
+    background:#fff4a9;opacity:.72;
+    box-shadow:18px 18px 0 #ff91bd, -12px 35px 0 #9de7c4;
+  }
+  .device.phone .island{
+    position:absolute;z-index:2;top:4px;left:50%;
+    transform:translateX(-50%);
+    width:26px;height:6px;background:#222332;border-radius:6px;
+  }
+  .camera{
+    position:absolute;left:7px;top:7px;z-index:3;
+    width:34px;height:40px;background:#353744;
+    border:3px solid #202132;
+    box-shadow:3px 3px 0 rgba(0,0,0,.25);
+  }
+  .camera:before,.camera:after{
+    content:"";position:absolute;width:10px;height:10px;
+    background:#a9d9ff;border:2px solid #161725;border-radius:50%;
+  }
+  .camera:before{left:3px;top:3px}.camera:after{right:3px;bottom:3px}
+
+  .device.mac{
+    width:166px;height:106px;border:6px solid #3f4051;
+    background:#d9dce6;border-radius:6px 6px 3px 3px;
+  }
+  .device.mac .screen{
+    position:absolute;inset:9px;
+    background:linear-gradient(145deg,#9bdfff,#c4aaff,#ffb1d2);
+    border:3px solid #444657;
+  }
+  .device.mac:after{
+    content:"";position:absolute;left:-18px;right:-18px;bottom:-15px;
+    height:10px;background:#aeb3c0;border:5px solid #3f4051;border-radius:3px;
+  }
+  .device.ipad{
+    width:142px;height:104px;border:6px solid #3f4051;border-radius:10px;
+    background:#d1d5df;
+  }
+  .device.ipad .screen{
+    position:absolute;inset:8px;background:linear-gradient(145deg,#9de7c4,#8ed8ff,#c6a8ff);
+    border:3px solid #444657;
+  }
+
+  .device.pencil{
+    width:190px;height:25px;
+    border:4px solid #3f4051;
+    border-radius:14px 5px 5px 14px;
+    background:#f4f0e7;
+    transform:rotate(-28deg);
+    box-shadow:6px 6px 0 rgba(63,64,81,.3);
+  }
+  .device.pencil:before{
+    content:"";
+    position:absolute;right:-22px;top:-4px;
+    width:22px;height:25px;
+    background:#c7cad4;
+    border:4px solid #3f4051;
+    border-left:0;
+    border-radius:0 12px 12px 0;
+  }
+  .device.pencil:after{
+    content:"";
+    position:absolute;left:-25px;top:3px;
+    border-top:7px solid transparent;
+    border-bottom:7px solid transparent;
+    border-right:25px solid #d7b58f;
+  }
+
+  .card.sold{filter:saturate(.65)}
+  .card.sold .badge{background:#d8d3dc}
+  .sold-stamp{
+    position:absolute;left:10px;bottom:58px;
+    padding:4px 8px;background:#ff9eae;
+    border:3px solid var(--ink);
+    transform:rotate(-8deg);
+    font-family:"ZCOOL KuaiLe",sans-serif;
+    font-size:14px;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+
+  .name{
+    margin:14px 0 2px;
+    text-align:center;
+    font-family:"ZCOOL KuaiLe","DotGothic16",sans-serif;
+    font-size:21px;
+  }
+  .type{text-align:center;font-size:11px;opacity:.7}
+
+  /* detail */
+  .modal{
+    position:fixed;inset:0;z-index:20;
+    display:none;align-items:center;justify-content:center;
+    padding:20px;background:rgba(72,51,78,.55);
+  }
+  .modal.show{display:flex}
+  .modal.show .detail{
+    animation:detailPop .42s cubic-bezier(.2,1.4,.5,1) both;
+  }
+  .modal.show .detail-left .device{
+    animation:deviceBounce .55s .08s cubic-bezier(.2,1.5,.5,1) both;
+  }
+  @keyframes detailPop{
+    0%{opacity:0;transform:translateY(28px) scale(.88) rotate(-2deg)}
+    65%{opacity:1;transform:translateY(-4px) scale(1.02) rotate(.5deg)}
+    100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+  }
+  @keyframes deviceBounce{
+    0%{opacity:0;transform:scale(1.35) rotate(-8deg)}
+    65%{opacity:1;transform:scale(1.58) rotate(3deg)}
+    100%{opacity:1;transform:scale(1.7) rotate(0)}
+  }
+  .detail{
+    width:min(1100px,95vw);
+    min-height:560px;
+    background:#fffaf1;
+    border:5px solid var(--ink);
+    box-shadow:12px 12px 0 var(--ink);
+    display:grid;grid-template-columns:1fr 1fr;
+    position:relative;
+    overflow:hidden;
+  }
+  .detail-left{
+    min-height:560px;
+    display:grid;place-items:center;
+    padding:30px;
+    background:#eadfff;
+    border-right:5px solid var(--ink);
+  }
+  .detail-left .device{transform:scale(1.7)}
+  .detail-right{padding:48px 42px}
+  .close{
+    position:absolute;right:12px;top:12px;
+    width:42px;height:42px;
+    background:var(--pink);border:3px solid var(--ink);
+    box-shadow:3px 3px 0 var(--ink);
+    cursor:pointer;font-size:22px;font-weight:bold;
+  }
+  .detail-title{
+    font-family:"ZCOOL KuaiLe",sans-serif;
+    font-size:40px;margin:0 0 8px;
+  }
+  .detail-type{opacity:.7;margin-bottom:28px}
+  .info{
+    display:grid;grid-template-columns:120px 1fr;
+    border-top:2px dashed #b99caf;
+  }
+  .info div{padding:15px 8px;border-bottom:2px dashed #b99caf}
+  .label{font-size:13px}
+  .value{
+    font-family:"ZCOOL KuaiLe","Comic Sans MS",cursive;
+    font-size:21px;
+    color:#785f83;
+  }
+  .status{
+    display:inline-block;padding:6px 10px;
+    background:var(--mint);border:3px solid var(--ink);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .tip{
+    margin-top:25px;padding:12px;
+    background:#fff0a9;border:3px solid var(--ink);
+    font-size:12px;line-height:1.7;
+  }
+
+  @media(max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .detail{grid-template-columns:1fr;max-height:92vh;overflow:auto}
+    .detail-left{min-height:360px;border-right:0;border-bottom:5px solid var(--ink)}
+  }
+  @media(max-width:520px){
+    .grid{grid-template-columns:1fr}
+    .title{font-size:38px}
+    .detail-right{padding:32px 22px}
+  }
+  .apple-garden-title{
+    text-align:center;margin:20px 0 4px;
+    font-family:"ZCOOL KuaiLe",sans-serif;font-size:17px;
+  }
+  .apples{
+    height:105px;position:relative;
+  }
+  .paint-apple{
+    position:absolute;width:var(--s);height:var(--s);
+    background:var(--c);border:4px solid var(--ink);
+    border-radius:48% 52% 48% 52%;
+    transform:rotate(var(--r));
+    box-shadow:4px 4px 0 rgba(85,63,97,.22);
+  }
+  .paint-apple:before{
+    content:"";position:absolute;width:42%;height:15%;
+    left:42%;top:-12%;background:#78b86a;
+    border:3px solid var(--ink);transform:rotate(-28deg);
+    border-radius:80% 10% 80% 10%;
+  }
+  .paint-apple:after{
+    content:"";position:absolute;width:20%;height:22%;
+    left:50%;top:-20%;background:#6c4f3e;
+    border:2px solid var(--ink);transform:rotate(18deg);
+  }
+  .paint-apple:nth-child(1){left:3%;top:45px;--s:31px;--c:#ff7f9f;--r:-13deg}
+  .paint-apple:nth-child(2){left:11%;top:24px;--s:49px;--c:#ffd45e;--r:8deg}
+  .paint-apple:nth-child(3){left:20%;top:53px;--s:25px;--c:#91ddff;--r:-5deg}
+  .paint-apple:nth-child(4){left:29%;top:17px;--s:42px;--c:#bba0ff;--r:14deg}
+  .paint-apple:nth-child(5){left:39%;top:50px;--s:34px;--c:#ff9b70;--r:-11deg}
+  .paint-apple:nth-child(6){left:49%;top:20px;--s:55px;--c:#98e3b5;--r:6deg}
+  .paint-apple:nth-child(7){left:61%;top:53px;--s:28px;--c:#ff91c7;--r:-18deg}
+  .paint-apple:nth-child(8){left:70%;top:15px;--s:44px;--c:#a9b7ff;--r:12deg}
+  .paint-apple:nth-child(9){left:80%;top:49px;--s:35px;--c:#ffe57f;--r:-7deg}
+  .paint-apple:nth-child(10){left:90%;top:27px;--s:51px;--c:#ff8794;--r:16deg}
+
+  @media(max-width:650px){
+  .device.watch .screen{
+    position:absolute;inset:9px;border-radius:16px;
+    background:linear-gradient(145deg,#ff91bd,#8ed8ff,#bda4ff);
+    border:3px solid #11121e;
+  }
+  .watch-band{position:absolute;left:32px;right:32px;top:-45px;height:38px;background:#55576b;border:5px solid #3f4051;z-index:-1}
+  .device.airpods{width:125px;height:82px;border:0;background:transparent;box-shadow:none}
+  .bud,.bud.right{
+    position:absolute;width:43px;height:64px;background:#f8f7f2;
+    border:5px solid #3f4051;border-radius:22px 22px 16px 16px;
+    box-shadow:5px 5px 0 rgba(63,64,81,.25);
+  }
+  .bud{left:13px;top:9px}.bud.right{right:13px;top:9px}
+  .bud:after{content:"";position:absolute;left:14px;bottom:-24px;width:10px;height:25px;background:#f8f7f2;border:4px solid #3f4051;border-top:0;border-radius:0 0 8px 8px}
+  .device.vision{width:155px;height:68px;border-radius:28px;background:#d8d9df;border:6px solid #3f4051}
+  .vision-glass{position:absolute;inset:10px 8px;border-radius:22px;background:linear-gradient(90deg,#b5d8ff,#d9b9ff,#b7f0e1);border:3px solid #444657}
+
+</style>
+</head>
+
+<body>
+<header>
+  <h1 class="title" aria-label="电子玩具们">
+      <span>电</span><span>子</span><span>玩</span><span>具</span><span>们</span>
+    </h1>
+  <p class="subtitle">♡ 记录每一位陪我工作、学习、娱乐的小伙伴 ♡<br>点击设备卡片，查看它的专属资料。</p>
+</header>
+
+<div class="toolbar">
+  <button class="filter active" data-filter="all">全部伙伴</button>
+  <button class="filter" data-filter="phone">手机</button>
+  <button class="filter" data-filter="computer">电脑</button>
+  <button class="filter" data-filter="tablet">平板</button>
+  <button class="filter" data-filter="pencil">手写笔</button>
+</div>
+
+<main class="grid" id="grid"></main>
+<div class="apple-garden">
+  <div class="apple-garden-title">🍎 一些小小的彩色苹果，给每一位电子伙伴盖个章 🍎</div>
+  <div class="apples">
+    <i class="paint-apple"></i><i class="paint-apple"></i><i class="paint-apple"></i>
+    <i class="paint-apple"></i><i class="paint-apple"></i><i class="paint-apple"></i>
+    <i class="paint-apple"></i><i class="paint-apple"></i><i class="paint-apple"></i>
+    <i class="paint-apple"></i>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <section class="detail">
+    <button class="close" id="close">×</button>
+    <div class="detail-left" id="detailVisual"></div>
+    <div class="detail-right">
+      <h2 class="detail-title" id="detailName"></h2>
+      <div class="detail-type" id="detailType"></div>
+      <div class="info">
+        <div class="label">产品发布</div><div class="value" id="detailYear"></div>
+        <div class="label">购买价格</div><div class="value" id="detailPrice"></div>
+        <div class="label">设备状态</div><div class="value"><span class="status" id="detailStatus"></span></div>
+      </div>
+      <div class="tip">✎ 小提示：每一个设备也都存着各自美好的回忆</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const defaultDevices = [
+  {name:"iPhone 7", type:"phone", typeName:"手机", year:"2016", price:"¥ 6,599", status:"珍藏中"},
+  {name:"iPhone 12", type:"phone", typeName:"手机", year:"2020", price:"¥ 5,499", status:"陪伴中"},
+  {name:"iPhone 12 Pro Max", type:"phone", typeName:"手机", year:"2020", price:"¥ 8,699", status:"珍藏中"},
+  {name:"iPhone 15 Pro", type:"phone", typeName:"手机", year:"2023", price:"¥ 7,999", status:"已售出"},
+  {name:"iPhone 16", type:"phone", typeName:"手机", year:"2024", price:"¥ 5,999", status:"主力伙伴"},
+  {name:"iPhone 17", type:"phone", typeName:"手机", year:"2025", price:"¥ 6,999", status:"主力伙伴"},
+  {name:"MacBook Air", type:"computer", typeName:"电脑", year:"待填写", price:"¥ 3,999", status:"工作伙伴"},
+  {name:"MacBook Neo", type:"computer", typeName:"电脑", year:"2026", price:"¥ 3,199", status:"新伙伴"},
+  {name:"iPad Air 3", type:"tablet", typeName:"平板", year:"2019", price:"¥ 3,999", status:"学习伙伴"},
+  {name:"Pencil 1", type:"pencil", typeName:"手写笔", year:"2015", price:"¥ 728", status:"已售出"}
+];
+
+const devices = [...defaultDevices];
+let currentFilter = "all";
+
+function pixelDevice(type){
+  let cls = type === "computer" ? "mac" :
+            type === "tablet" ? "ipad" :
+            type === "pencil" ? "pencil" :
+            type === "watch" ? "watch" :
+            type === "airpods" ? "airpods" :
+            type === "vision" ? "vision" : "phone";
+  return `<div class="device ${cls}">
+    <div class="screen"></div>
+    ${type === "phone" ? '<div class="island"></div><div class="camera"></div>' : ''}
+    ${type === "watch" ? '<div class="watch-band"></div>' : ''}
+    ${type === "airpods" ? '<div class="bud"></div><div class="bud right"></div>' : ''}
+    ${type === "vision" ? '<div class="vision-glass"></div>' : ''}
+  </div>`;
+}
+
+function render(filter="all"){
+  currentFilter = filter;
+  const grid = document.getElementById("grid");
+  const list = devices.filter(d => filter==="all" || d.type===filter);
+  grid.innerHTML = list.map(d=>`
+    <article class="card ${d.status==="已售出" ? "sold" : ""}" data-index="${devices.indexOf(d)}">
+      <span class="badge">${d.typeName}</span>
+      ${d.status==="已售出" ? '<span class="sold-stamp">已售出</span>' : ''}
+      <div class="pixel-stage">${pixelDevice(d.type)}</div>
+      <div class="name">${d.name}</div>
+      <div class="type">点击查看详细资料 ✦</div>
+    </article>
+  `).join("");
+
+  document.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("click",()=>openDetail(Number(card.dataset.index)));
+  });
+}
+
+function openDetail(i){
+  const d=devices[i];
+  document.getElementById("detailVisual").innerHTML=pixelDevice(d.type);
+  document.getElementById("detailName").textContent=d.name;
+  document.getElementById("detailType").textContent=d.typeName;
+  document.getElementById("detailYear").textContent=d.year || "待填写";
+  document.getElementById("detailPrice").textContent=d.price || "待填写";
+  document.getElementById("detailStatus").textContent=d.status || "待填写";
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeDetail(){document.getElementById("modal").classList.remove("show")}
+
+document.getElementById("close").addEventListener("click",closeDetail);
+document.getElementById("modal").addEventListener("click",e=>{
+  if(e.target.id==="modal") closeDetail();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ closeDetail(); }
+});
+
+document.querySelectorAll(".filter").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    render(btn.dataset.filter);
+  });
+});
+
+render();
+</script>
+</body>
+</html>
